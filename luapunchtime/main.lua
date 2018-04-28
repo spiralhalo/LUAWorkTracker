@@ -96,6 +96,7 @@ end
 function NewTaskCB()
   AddActiveGUI(newTaskGUI)
   newTaskTxt.active = true
+  TextField.activeTF = newTaskTxt
   newTaskBtn.disabled = true
   endTaskBtn.disabled = false
 end
