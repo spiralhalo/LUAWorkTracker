@@ -13,7 +13,7 @@ function Util.strSplit(inputstr, sep)
 end
 
 function Util.dateString(time)
-  return os.date("%a, %d %b %Y", time)
+  return os.date("%a, %d %b %Y %X", time)
 end
 
 function Util.hourstring(dtime)
@@ -23,26 +23,14 @@ function Util.hourstring(dtime)
   result = {}
   if hr > 0 then
     table.insert(result, hr)
-    if hr > 1 then
-      table.insert(result, " hours ")
-    else
-      table.insert(result, " hour ")
-    end
+    table.insert(result, " h ")
   end
   if min > 0 then
     table.insert(result, min)
-    if min > 1 then
-      table.insert(result, " minutes ")
-    else
-      table.insert(result, " minute ")
-    end
+    table.insert(result, " m ")
   end
   table.insert(result, sec)
-  if sec > 1 then
-    table.insert(result, " seconds")
-  else
-    table.insert(result, " second")
-  end
+  table.insert(result, " s")
   return table.concat(result)
 end
 

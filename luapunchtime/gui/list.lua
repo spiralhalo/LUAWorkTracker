@@ -9,6 +9,7 @@ function List.new(_height, _content, _cb)
     cb = _cb or nil
   }
   o.parent = nil
+  o.reversed = false
   o.x = 0
   o.y = 0
   o.width = C.WINDOW_W
@@ -63,14 +64,27 @@ function List:draw()
       y = line*self.lineheight
       love.graphics.rectangle( 'fill', self.x+C.PADDING/2, self.y+y+C.PADDING/4, self.width-C.PADDING/2, self.lineheight)
       if love.mouse.isDown(1) and self.cb ~= nil then
-        self.cb(line+self.startRow)
+        if self.reversed then
+          self.cb(#self.content(line+self.startRow)+1)
+        else
+          self.cb(line+self.startRow)
+        end
       end
     end
   end
   love.graphics.setColor( 1, 1, 1, 1)
   love.graphics.rectangle( 'line', self.x, self.y, self.width, self.height )
   y = 0
-  for i=self.startRow,self.startRow+self.n_showable-1 do
+  startShow = self.startRow
+  endShow = self.startRow+self.n_showable-1
+  inc = 1
+  if self.reversed then
+    num = #self.content
+    startShow = num - startShow + 1
+    endShow = num - endShow + 1
+    inc = -1
+  end
+  for i=startShow,endShow,inc do
     if self.content[i] == nil then break end
     text = self.content[i]
     if type(text) == 'table' then

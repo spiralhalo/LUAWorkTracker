@@ -160,6 +160,7 @@ function love.load()
   endTaskBtn.disabled = true
   mainGUI:addWidget(endTaskBtn, nil)
   historyList = List.new(C.WINDOW_H-mainGUI.height-C.PADDING, ProgramData.timeTable)
+  historyList.reversed = true
   mainGUI:addWidget(historyList, nil)
   AddActiveGUI(mainGUI)
   newTaskGUI = GUI.new(nil, nil, "Start a new task")
