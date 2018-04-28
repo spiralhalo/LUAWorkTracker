@@ -1,4 +1,4 @@
-#Work Tracker App
+# Work Tracker App
 
 Helps you track your work time.
 
