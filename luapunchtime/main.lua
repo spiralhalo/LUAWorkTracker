@@ -119,7 +119,7 @@ function EndActivity()
   if not CurrentActivity.running then return end
   CurrentActivity.running = false
   elapsed = os.time() - CurrentActivity.startTime
-  table.insert(ProgramData.timeTable,{Util.dateString(os.time()),'END',CurrentActivity.name,'worked for '..Util.hourstring(elapsed)})
+  table.insert(ProgramData.timeTable,{Util.dateString(os.time()),'END',CurrentActivity.name,'worked '..Util.hourstring(elapsed)})
   SaveData()
 end
 
@@ -153,6 +153,7 @@ function love.load()
 	love.window.setMode(C.WINDOW_W, C.WINDOW_H)
 	love.graphics.setDefaultFilter("nearest","nearest")
   love.keyboard.setKeyRepeat(true)
+  love.filesystem.setIdentity("luapunchtime")
   LoadData()
   mainGUI = GUI.new()
   newTaskBtn = Button.new(nil, "start new task", NewTaskCB)
