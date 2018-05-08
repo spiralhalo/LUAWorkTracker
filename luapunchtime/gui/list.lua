@@ -138,7 +138,6 @@ function List:draw()
 end
 
 function List:update(dt)
-  print(self.startRow)
   if self._count ~= #self.content then
     dec = self._count > #self.content
     self._count = #self.content
