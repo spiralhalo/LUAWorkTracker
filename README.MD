@@ -24,12 +24,18 @@ NOTE: To uninstall, remove app data from the user dictionary. For windows, it's 
 
 # Changelog
 
-- 1.2 (unreleased): 
+- 1.2: 
+  - added mouse wheel scrolling
+  - added color coding
   - shorten the time and work hour message for more compact view
 - 1.1:
   - reversed task list so newest task is on the top
   - added time to the timestamp in addition to date
 - 1.0: initial release
+
+# Third Party Credits
+
+Uses [luaxxhash](https://github.com/szensk/luaxxhash) for color coding.
 
 # Screenshots
 
