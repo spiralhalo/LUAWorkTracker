@@ -202,3 +202,7 @@ end
 function love.keypressed(key, scancode, isrepeat)
   TextField.receiveKey(key)
 end
+
+function love.wheelmoved(x, y)
+  List.receiveMouseWheel(x, y)
+end

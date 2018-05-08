@@ -18,10 +18,21 @@ function List.new(_height, _content, _cb, _useColor)
   o.startRow = 1
   o.mousein = false
   o._count = #o.content
+  o._scroll = false
   o._colorCache = nil
   setmetatable(o, {__index = List})
   o:refresh()
   return o
+end
+
+List.activeList = nil
+function List.receiveMouseWheel(x, y)
+  if List.activeList == nil then return end
+  if y > 0 and List.activeList.startRow > 1 then
+    List.activeList.startRow = List.activeList.startRow - 1
+  elseif y < 0 and List.activeList.startRow < List.activeList._count then
+    List.activeList.startRow = List.activeList.startRow + 1
+  end
 end
 
 function List:refresh(dec)
@@ -50,10 +61,14 @@ function List:refresh(dec)
     end
   end
   self.lineheight = C.LINE_HEIGHT + C.PADDING/2
-  self.n_showable = (self.height - C.PADDING) / self.lineheight
-  self.maxStartRow = self._count - self.n_showable + 1
+  self._nshowable = math.floor((self.height - C.PADDING) / self.lineheight)
+  self.maxStartRow = self._count - self._nshowable + 1
   if self.maxStartRow < 1 then
     self.maxStartRow = 1
+  end
+  if self._nshowable < self._count then
+    self._scroll = true
+    self._scrollsize = self._nshowable/self._count*self.height-C.PADDING*2
   end
 end
 
@@ -72,7 +87,7 @@ function List:draw()
   end
   -- determine visible rows
   startShow = self.startRow
-  endShow = self.startRow+self.n_showable-1
+  endShow = self.startRow+self._nshowable-1
   inc = 1
   if self.reversed then
     startShow = self._count - startShow + 1
@@ -113,9 +128,17 @@ function List:draw()
   end
   -- render border
   love.graphics.rectangle( 'line', self.x, self.y, self.width, self.height )
+  -- render scrollbar
+  if self._scroll then
+    love.graphics.setColor( 1, 1, 1, 0.5)
+    local scrolly = self.y+self.height*(self.startRow-1)/self._count + C.PADDING
+    local xsize = C.PADDING
+    love.graphics.rectangle( 'fill', self.x+self.width-xsize*2, scrolly, xsize, self._scrollsize, xsize/2, math.min(xsize/2,self._scrollsize/2) )
+  end
 end
 
 function List:update(dt)
+  print(self.startRow)
   if self._count ~= #self.content then
     dec = self._count > #self.content
     self._count = #self.content
@@ -124,8 +147,12 @@ function List:update(dt)
   x, y = love.mouse.getPosition( )
   if x > self.x and x < self.x+self.width and y > self.y+C.PADDING/2 and y < self.y+self.height-C.PADDING/2 then
     self.mousein = true
+    List.activeList = self
   else
     self.mousein = false
+    if List.activeList == self then
+      List.activeList = nil
+    end
   end
 end
 
