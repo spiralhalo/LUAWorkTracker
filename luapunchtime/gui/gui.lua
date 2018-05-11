@@ -5,6 +5,38 @@ local C = require "const"
 
 local GUI = {}
 
+GUI.ActiveGUI = {}
+
+function GUI.AddActiveGUI(gui)
+  for k,v in pairs(GUI.ActiveGUI) do
+    v.active = false
+  end
+  gui.x = C.PADDING*2*#GUI.ActiveGUI
+  gui.width = C.WINDOW_W-C.PADDING*4*#GUI.ActiveGUI
+  gui.y = C.PADDING*2*#GUI.ActiveGUI
+  gui:refresh()
+  table.insert(GUI.ActiveGUI, gui)
+end
+
+function GUI.RemoveActiveGUI()
+  table.remove(GUI.ActiveGUI,#GUI.ActiveGUI)
+  GUI.ActiveGUI[#GUI.ActiveGUI].active = true
+end
+
+function GUI.updateGUIs(dt)
+  for k,v in pairs(GUI.ActiveGUI) do
+    v:update(dt)
+  end
+end
+
+function GUI.drawGUIs()
+  for k,v in pairs(GUI.ActiveGUI) do
+    love.graphics.setColor(0, 0, 0, 0.5)
+    love.graphics.rectangle("fill", 0, 0, C.WINDOW_W, C.WINDOW_H)
+    v:draw()
+  end
+end
+
 function GUI.new(_padding, _width, _title)
   local o = {
     padding = _padding or C.PADDING,

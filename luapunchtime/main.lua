@@ -16,7 +16,6 @@ local newTaskTxt = nil
 local newTaskOKBtn = nil
 local newTaskHistoryList = nil
 
-local ActiveGUI = {}
 local CurrentActivity = {
   running = false,
   name = "",
@@ -77,24 +76,8 @@ function ComposeDataString(data)
   return temp0
 end
 
-function AddActiveGUI(gui)
-  for k,v in pairs(ActiveGUI) do
-    v.active = false
-  end
-  gui.x = C.PADDING*2*#ActiveGUI
-  gui.width = C.WINDOW_W-C.PADDING*4*#ActiveGUI
-  gui.y = C.PADDING*2*#ActiveGUI
-  gui:refresh()
-  table.insert(ActiveGUI, gui)
-end
-
-function RemoveActiveGUI()
-  table.remove(ActiveGUI,#ActiveGUI)
-  ActiveGUI[#ActiveGUI].active = true
-end
-
 function NewTaskCB()
-  AddActiveGUI(newTaskGUI)
+  GUI.AddActiveGUI(newTaskGUI)
   newTaskTxt.active = true
   TextField.activeTF = newTaskTxt
   newTaskBtn.disabled = true
@@ -163,7 +146,7 @@ function love.load()
   mainGUI:addWidget(endTaskBtn, nil)
   historyList = List.new(C.WINDOW_H-mainGUI.height-C.PADDING, ProgramData.timeTable, nil, 3, true)
   mainGUI:addWidget(historyList, nil)
-  AddActiveGUI(mainGUI)
+  GUI.AddActiveGUI(mainGUI)
   newTaskGUI = GUI.new(nil, nil, "Start a new task")
   newTaskTxt = TextField.new(nil, nil)
   newTaskOKBtn = Button.new(nil, "confirm", NewTaskOKCB)
@@ -181,17 +164,11 @@ function love.quit()
 end
 
 function love.draw()
-  for k,v in pairs(ActiveGUI) do
-    love.graphics.setColor(0, 0, 0, 0.5)
-    love.graphics.rectangle("fill", 0, 0, C.WINDOW_W, C.WINDOW_H)
-    v:draw()
-  end
+  GUI.drawGUIs()
 end
 
 function love.update(dt)
-  for k,v in pairs(ActiveGUI) do
-    v:update(dt)
-  end
+  GUI.updateGUIs(dt)
 end
 
 function love.textinput(t)
