@@ -34,8 +34,9 @@ end
 
 function List:refreshDisplay()
   local inc,hinc = self._inc,self._inc*0.5
-  self._beg=self._scr*inc+self._count*(0.5-hinc)-(hinc-0.5)
-  self._end=(self._scr+self._nshown-1)*inc+self._count*(0.5-hinc)
+  self._beg=Util.clamp(self._scr*inc+self._count*(0.5-hinc)-(hinc-0.5),1,self._count)
+  self._end=Util.clamp((self._scr+self._nshown-1)*inc+self._count*(0.5-hinc),1,self._count)
+  print(self._count)
 end
 
 function List:refresh(dc)
@@ -55,7 +56,7 @@ function List:refresh(dc)
       table.insert(self._color, cl)
     end
   end
-  self.line_h = C.LINE_HEIGHT + C.PADDING/2
+  self.line_h = C.LINE_HEIGHT + C.HPADDING
   self._nshown = math.floor((self.height - C.PADDING) / self.line_h)
   self._mScr = math.max(self._count - self._nshown + 1, 1)
   self._sb = self._nshown < self._count
@@ -86,10 +87,10 @@ function List:draw()
       end
       if self.useColor ~= nil then
         love.graphics.setColor(self._color[i])
-        love.graphics.rectangle( 'fill', self.x+C.PADDING/2, self.y+y+C.PADDING/4, self.width-C.PADDING/2, self.line_h)
+        love.graphics.rectangle( 'fill', self.x+C.HPADDING, self.y+y+C.QPADDING, self.width-C.HPADDING, self.line_h)
       end
       love.graphics.setColor( 1, 1, 1, 1)
-      love.graphics.print( text, self.x+C.PADDING, self.y+C.PADDING+y )
+      love.graphics.print( text, self.x+C.PADDING, self.y+C.HPADDING+y, 0, C.FONT_W, C.FONT_H )
       y = y + self.line_h
     end
   end
@@ -100,8 +101,8 @@ function List:draw()
       local y = line*self.line_h
       love.graphics.setBlendMode('add')
       love.graphics.setColor(1, 1, 1, 0.2)
-      love.graphics.rectangle( 'fill', self.x+C.PADDING/2, self.y+y+C.PADDING/4, self.width-C.PADDING/2, self.line_h)
-      love.graphics.rectangle( 'line', self.x+C.PADDING/2, self.y+y+C.PADDING/4+1, self.width-C.PADDING/2-3, self.line_h-3)
+      love.graphics.rectangle( 'fill', self.x+C.HPADDING, self.y+y+C.QPADDING, self.width-C.HPADDING, self.line_h)
+      love.graphics.rectangle( 'line', self.x+C.HPADDING, self.y+y+C.QPADDING+1, self.width-C.HPADDING-3, self.line_h-3)
       love.graphics.setBlendMode('alpha','alphamultiply')
     end
   end
@@ -124,7 +125,7 @@ function List:update(dt)
     self:refresh(dec)
   end
   local mx, my = love.mouse.getPosition( )
-  if mx > self.x and mx < self.x+self.width and my > self.y+C.PADDING/2 and my < self.y+self.height-C.PADDING/2 then
+  if mx > self.x and mx < self.x+self.width and my > self.y+C.HPADDING and my < self.y+self._nshown*self.line_h then
     self._sel = math.floor((my-self.y)/self.line_h)*self._inc + self._beg
     self._mousein = true
     List.activ = self

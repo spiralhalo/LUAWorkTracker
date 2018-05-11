@@ -127,7 +127,7 @@ function NewTaskOKCB()
 end
 
 function HistoryListCB(i)
-  newTaskTxt.content = ProgramData.labelHistory[i]
+  newTaskTxt.content = tostring(ProgramData.labelHistory[i])
   newTaskTxt.active = true
 end
 
@@ -137,6 +137,8 @@ function love.load()
 	love.graphics.setDefaultFilter("nearest","nearest")
   love.keyboard.setKeyRepeat(true)
   love.filesystem.setIdentity("luapunchtime")
+  -- love.graphics.setFont(love.graphics.newImageFont('media/font.png',' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_♦abcdefghijklmnopqrstuvwxyz♠|⏎◄►'))
+  love.graphics.setFont(love.graphics.newFont('media/font.fnt'))
   LoadData()
   mainGUI = GUI.new()
   newTaskBtn = Button.new(nil, "start new task", NewTaskCB)
@@ -144,7 +146,7 @@ function love.load()
   endTaskBtn = Button.new(nil, "end task", EndTaskCB)
   endTaskBtn.disabled = true
   mainGUI:addWidget(endTaskBtn, nil)
-  historyList = List.new(C.WINDOW_H-mainGUI.height-C.PADDING, ProgramData.timeTable, nil, 3, true)
+  historyList = List.new(C.WINDOW_H-mainGUI.height-C.PADDING, ProgramData.timeTable, dummy, 3, true)
   mainGUI:addWidget(historyList, nil)
   GUI.AddActiveGUI(mainGUI)
   newTaskGUI = GUI.new(nil, nil, "Start a new task")

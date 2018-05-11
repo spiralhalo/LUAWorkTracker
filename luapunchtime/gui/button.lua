@@ -40,7 +40,7 @@ function Button:draw()
     love.graphics.setColor( 1, 1, 1, 1)
   end
   love.graphics.rectangle( 'line', self.x, self.y, self.width, self.height )
-  love.graphics.print( self.label, self.x+C.PADDING+movetext, self.y+C.PADDING/2+movetext )
+  love.graphics.print( self.label, self.x+C.PADDING+movetext, self.y+C.HPADDING+movetext, 0, C.FONT_W, C.FONT_H )
 end
 
 function Button:update(dt)

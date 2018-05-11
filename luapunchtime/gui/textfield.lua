@@ -62,7 +62,7 @@ function TextField:draw()
     love.graphics.setColor( 0.5, 0.5, 0.5, 1)
   end
   love.graphics.rectangle( 'line', self.x, self.y, self.width, self.height )
-  love.graphics.print( self.content, self.x+C.PADDING, self.y+C.PADDING/2 )
+  love.graphics.print( self.content, self.x+C.PADDING, self.y+C.HPADDING, 0, C.FONT_W, C.FONT_H)
 
   if self.active and self._cursorDisplay then
     font = love.graphics.getFont()

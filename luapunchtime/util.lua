@@ -4,6 +4,12 @@ local band, shr = bit.band, bit.rshift
 
 local Util = {}
 
+function Util.clamp(x, min, max)
+  if x < min then return min
+  elseif x > max then return max
+  else return x end
+end
+
 function Util.strSplit(inputstr, sep)
   if sep == nil then
     sep = "%s"

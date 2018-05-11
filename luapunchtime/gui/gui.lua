@@ -63,7 +63,7 @@ function GUI:draw()
     love.graphics.setColor( 0.5, 0.2, 0.9, 1)
     love.graphics.rectangle( 'fill', self.x, self.y, self.width, C.TITLE_HEIGHT )
     love.graphics.setColor( 0.8, 0.9, 1, 1)
-    love.graphics.print(self.title, self.x+C.PADDING, self.y+C.PADDING*2)
+    love.graphics.print(self.title, self.x+C.PADDING, self.y+C.PADDING*2, 0, C.FONT_W, C.FONT_H)
   end
   love.graphics.setColor( 1, 1, 1, 1)
   love.graphics.rectangle( 'line', self.x, self.y, self.width, self.height )

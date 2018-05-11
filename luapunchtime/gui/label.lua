@@ -16,7 +16,7 @@ function Label.new(_height, _label)
 end
 
 function Label:draw()
-  love.graphics.print( self.label, self.x+C.PADDING, self.y+C.PADDING/2 )
+  love.graphics.print( self.label, self.x+C.PADDING, self.y+C.HPADDING, 0, C.FONT_W, C.FONT_H )
 end
 
 function Label:update(dt)
