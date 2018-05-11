@@ -123,7 +123,7 @@ function NewTaskOKCB()
   end
   StartActivity(text)
   newTaskTxt.content = ""
-  RemoveActiveGUI()
+  GUI.RemoveActiveGUI()
 end
 
 function HistoryListCB(i)
